@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.facebook.react:react-native:+'
+    compile "me.leolin:ShortcutBadger:1.1.21@aar"
+    compile 'com.tencent.xinge:xinge:3.2.2-release'
+    compile 'com.tencent.wup:wup:1.0.0.E-release'
+    compile 'com.tencent.mid:mid:4.0.6-release'
+    compile 'com.tencent.xinge:xghw:2.5.2.300-release'
+    compile 'com.tencent.xinge:mipush:3.2.2-release'
+    compile 'com.tencent.xinge:xgmz:3.2.2-release'
+}
