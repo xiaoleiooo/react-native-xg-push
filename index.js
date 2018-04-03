@@ -113,13 +113,7 @@ export default class XGPush {
 	// 	XGPushModule.crashLogOFF();
 	// }
     //
-	// /**
-	//  * Android Only
-	//  */
-	// static crashLogON() {
-	// 	XGPushModule.crashLogON();
-	// }
-    //
+
 	/**
 	 * Android Only
 	 *
@@ -130,29 +124,27 @@ export default class XGPush {
 			cb(resultCode);
 		});
 	}
-    //
-	// /**
-	//  * Android Only
-	//  */
-	// static clearAllNotifications() {
-	// 	XGPushModule.clearAllNotifications();
-	// }
-    //
-	// /**
-	//  * Android Only
-	//  */
-	// static clearNotificationById(id) {
-	// 	XGPushModule.clearNotificationById(id);
-	// }
-    //
-	// /**
-	//  * Android Only
-	//  */
-	// static getInfo(cb) {
-	// 	XGPushModule.getInfo((map) => {
-	// 		cb(map);
-	// 	});
-	// }
+
+	/**
+	 * Android Only
+	 */
+	static clearAllNotifications() {
+		XGPushModule.cancelAllNotifaction();
+	}
+
+	/**
+	 * Android Only
+	 */
+	static clearNotificationById(id) {
+		XGPushModule.cancelNotifaction(id);
+	}
+
+    /**
+     * Android Only
+     */
+    static clearLocalNotifications() {
+    	XGPushModule.clearLocalNotifications();
+    }
 
 
 	/**
@@ -165,6 +157,7 @@ export default class XGPush {
 	 */
 	static addTag(tag, cb) {
 	    if(Platform.OS === 'ios'){
+            console.log(tag);
             XGPushModule.addTag(tag, (result) => {
                 cb(result);
             });
@@ -233,7 +226,7 @@ export default class XGPush {
      * 如果失败 result = {errorCode: Int}
      *
      */
-    static deleteAccoun(account, cb) {
+    static deleteAccount(account, cb) {
         if(Platform.OS === 'ios'){
             XGPushModule.deleteAccoun(account, (result) => {
                 cb(result);
@@ -246,6 +239,18 @@ export default class XGPush {
 
     }
 
+    /**
+     * ios only
+     * 清除tag和account
+     * @param cb
+     */
+    static bindNone(cb) {
+        if(Platform.OS === 'ios'){
+            XGPushModule.bindNone((result) => {
+                cb(result);
+            });
+        }
+    }
 
     /**
      * Android Only
@@ -465,8 +470,6 @@ export default class XGPush {
 	 * @param {Function} cb = () => { } //
 	 */
 	static setBadge(badge, cb) {
-		XGPushModule.setBadge(badge, (value) => {
-			cb(value);
-		});
+		XGPushModule.setBadge(badge);
 	}
 }

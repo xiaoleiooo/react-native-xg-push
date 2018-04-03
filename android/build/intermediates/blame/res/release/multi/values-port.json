@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/rain/Documents/rnspace/DevXG/android/xgpushmodule/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-port/values-port.xml",
+        "outputFile": "/Users/rain/Documents/rnspace/TCOA.AnyHrApp/node_modules/react-native-smart-xgpush/android/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-port/values-port.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 106
                 },
                 "from": {
-                    "file": "/Users/rain/Documents/rnspace/DevXG/android/xgpushmodule/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-port/values-port.xml",
+                    "file": "/Users/rain/Documents/rnspace/TCOA.AnyHrApp/node_modules/react-native-smart-xgpush/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-port/values-port.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

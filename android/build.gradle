@@ -10,9 +10,6 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -27,11 +24,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.facebook.react:react-native:+'
-    compile "me.leolin:ShortcutBadger:1.1.21@aar"
+    compile 'me.leolin:ShortcutBadger:1.1.21@aar'
     compile 'com.tencent.xinge:xinge:3.2.2-release'
     compile 'com.tencent.wup:wup:1.0.0.E-release'
     compile 'com.tencent.mid:mid:4.0.6-release'
-    compile 'com.tencent.xinge:xghw:2.5.2.300-release'
-    compile 'com.tencent.xinge:mipush:3.2.2-release'
-    compile 'com.tencent.xinge:xgmz:3.2.2-release'
+//    compile 'com.tencent.xinge:xghw:2.5.2.300-release'
+//    compile 'com.tencent.xinge:mipush:3.2.2-release'
+//    compile 'com.tencent.xinge:xgmz:3.2.2-release'
 }

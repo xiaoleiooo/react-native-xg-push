@@ -20,6 +20,8 @@ import me.leolin.shortcutbadger.ShortcutBadger;
  */
 public class MessageReceiver extends XGPushBaseReceiver {
 
+    private static String TAG = "XGPushModule-MessageReceiver";
+
     /**
      * 注册结果
      * @param context
@@ -54,7 +56,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onSetTagResult(Context context, int errorCode, String tagName) {
-
+        Logger.d(TAG,"errorCode:"+errorCode+" tagName:"+tagName);
     }
 
     /**
@@ -92,6 +94,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
         if (context == null || notification == null) {
             return;
         }
+        Logger.d(TAG,"notification:"+notification.toString());
         if (notification.getActionType() == XGPushClickedResult.NOTIFACTION_CLICKED_TYPE) {
             // 通知在通知栏被点击
             Intent intent = new Intent(Constants.ACTION_ON_NOTIFICATION_CLICKED);
@@ -107,7 +110,9 @@ public class MessageReceiver extends XGPushBaseReceiver {
             intent.putExtra("activity", notification.getActivityName());
             intent.putExtra("msgId", notification.getMsgId());
             intent.putExtra("notificationActionType", notification.getNotificationActionType());
+            LocalNotificationCache.getInstance().addNotification(intent);
             context.sendBroadcast(intent);
+            Logger.d(TAG,"notification:"+notification.toString());
         } else if (notification.getActionType() == XGPushClickedResult.NOTIFACTION_DELETED_TYPE) {
             // 通知被清除
             // APP自己处理通知被清除后的相关动作

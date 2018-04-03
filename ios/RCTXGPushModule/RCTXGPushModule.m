@@ -24,20 +24,6 @@
 //#import <RCTRootView.h>
 //#import <RCTBridge.h>
 
-//#if __has_include(<React/RCTBridge.h>)
-//#import <React/RCTEventDispatcher.h>
-//#import <React/RCTRootView.h>
-//#import <React/RCTBridge.h>
-//#elif __has_include("RCTBridge.h")
-//#import "RCTEventDispatcher.h"
-//#import "RCTRootView.h"
-//#import "RCTBridge.h"
-//#elif __has_include("React/RCTBridge.h")
-//#import "React/RCTEventDispatcher.h"
-//#import "React/RCTRootView.h"
-//#import "React/RCTBridge.h"
-//#endif
-
 @interface RCTXGPushModule() <XGPushTokenManagerDelegate>{
     BOOL _isXGPushDidLogin;
 }
@@ -91,6 +77,8 @@ RCT_EXPORT_MODULE();
     if ([RCTXGActionQueue sharedInstance].openedLocalNotification != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kJPFOpenNotificationToLaunchApp object:[RCTXGActionQueue sharedInstance].openedLocalNotification];
     }
+    
+    [XGPushTokenManager defaultTokenManager].delegatge = self;
     
     return self;
 }
@@ -302,12 +290,12 @@ RCT_EXPORT_METHOD(deviceNotificationIsAllowed:(RCTResponseSenderBlock)callback){
 #pragma -----管理设备Token------
 /*!
  * 设置 tag 的方法
- * 开发者可以针对不同的用户绑定标签,然后对该标签推送.对标签推送会让该标签下的所有设备都收到推送.一个设备可以绑定多个标签.
+ * 开发者可以针对不同的用户绑定标签,然后对该标签推送.对标签推送会让该标签下的所有设备都收到推送.一个设备可以绑定多个标签.(不会覆盖以前的标签)
+ PS:经过测试发现，标签起作用有延迟，大概2个小时，慎用
  */
 
 RCT_EXPORT_METHOD( addTag:(NSString *)tag
                   callback:(RCTResponseSenderBlock)callback) {
-    NSError *error = nil;
     [[XGPushTokenManager defaultTokenManager] bindWithIdentifier:tag type: XGPushTokenBindTypeTag];
 }
 
@@ -317,10 +305,15 @@ RCT_EXPORT_METHOD( deleteTag:(NSString *)tag
 }
 
 RCT_EXPORT_METHOD( getAllTags:(RCTResponseSenderBlock)callback) {
-    NSArray<NSString *> * res = [[XGPushTokenManager defaultTokenManager] identifiersWithType:XGPushTokenBindTypeTag];
+    NSArray<NSString *> * tags = [[XGPushTokenManager defaultTokenManager] identifiersWithType:XGPushTokenBindTypeTag];
+    NSString *res = [[NSString alloc] init];
+    for (NSString *item in tags) {
+        res = [res stringByAppendingFormat:@"%@,", item];
+    }
+    NSLog(@"%@",res);
     if (res) {
-        NSString *tags = [self arrayToJSONString:res];
-        callback(@[@{@"tags": tags}]);
+        NSString *res = [self arrayToJSONString:tags];
+        callback(@[@{@"tags": res}]);
     }else{
         callback(@[@{@"error": @"获取标签错误"}]);
     }
@@ -350,11 +343,11 @@ RCT_EXPORT_METHOD( bindNone:(RCTResponseSenderBlock)callback) {
 
 #pragma mark - XGPushTokenManagerDelegate
 - (void)xgPushDidBindWithIdentifier:(NSString *)identifier type:(XGPushTokenBindType)type error:(NSError *)error {
-    NSLog(@"%s, id is %@, %@, error %@", __FUNCTION__, identifier, ((error == nil)?@"成功":@"失败",error));
+    NSLog(@"%s, id is %@, %@, error:%@", __FUNCTION__, identifier, ((error == nil)?@"成功":@"失败"),error);
 }
 
 - (void)xgPushDidUnbindWithIdentifier:(NSString *)identifier type:(XGPushTokenBindType)type error:(NSError *)error {
-    NSLog(@"%s, id is %@, %@, error %@", __FUNCTION__, identifier, ((error == nil)?@"成功":@"失败",error));
+    NSLog(@"%s, id is %@, %@, error:%@", __FUNCTION__, identifier, ((error == nil)?@"成功":@"失败"),error);
 }
 
 
@@ -362,7 +355,7 @@ RCT_EXPORT_METHOD( bindNone:(RCTResponseSenderBlock)callback) {
 
 {
     NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:kNilOptions error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     return jsonString;
 }
