@@ -205,14 +205,22 @@ android {
 ```
 在App中引入import XGPushModule from 'react-native-smart-xgpush';
 componentDidMount() {
-    if(Platform.OS === 'android'){
-        XGPushModule.bindAccount('41411',(msg)=>{
-            console.log('bindAccount',msg);
-            XGPushModule.getToken((msg1)=>{
-                console.log('getToken',msg1);
-            })
+    
+    if(Platform.OS === 'ios'){
+    	XGPushModule.setAccount(自己的account,(res)=>{
+            console.log(res);
         });
+    }else{
+   	XGPushModule.bindAccount(自己的account,(msg)=>{
+       	    console.log('bindAccount',msg);
+            XGPushModule.notifyJSDidLoad((msg)=>{});
+	});
     }
+    
+    XGPushModule.addTag(自己的tag,(msg)=>{
+         console.log(msg);
+    });
+    
     XGPushModule.addReceiveCustomMsgListener(this._iReceiveCustomMsgListener);
     XGPushModule.addReceiveNotificationListener(this._iReceiveNotificationListener);
     XGPushModule.addReceiveOpenNotificationListener(this._iReceiveOpenNotificationListener);
