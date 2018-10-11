@@ -40,7 +40,7 @@ public class XGPushModule extends ReactContextBaseJavaModule {
     private int badge = 0;
 
     private Context mContext;
-    private static String mEvent;
+    private static String mEvent = null;
     private static Intent mCachedBundle;
     private static ReactApplicationContext mRAC;
 
@@ -427,39 +427,44 @@ public class XGPushModule extends ReactContextBaseJavaModule {
 
     private static void sendEvent() {
         if(mRAC != null){
-            if (mEvent != null) {
-                Logger.i(TAG, "Sending event : " + mEvent);
-                WritableMap map = Arguments.createMap();
-                switch (mEvent) {
-                    case Constants.EVENT_MESSAGE_RECEIVED:
-                        String title = mCachedBundle.getStringExtra("title");
-                        String content = mCachedBundle.getStringExtra("content");
-                        String customContent = mCachedBundle.getStringExtra("custom_content");
-                        map.putString("title", title);
-                        map.putString("content", content);
-                        map.putString("custom_content", customContent);
-                        mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit(mEvent, map);
-                        break;
-                    case Constants.EVENT_REGISTERED_ID:
-                        String token = mCachedBundle.getStringExtra("token");
-                        mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit(mEvent, token);
-                        break;
-                    case Constants.EVENT_REMOTE_NOTIFICATION_RECEIVED:
-                    case Constants.EVENT_OPEN_NOTIFICATION:
-                        map = Arguments.createMap();
-                        map.putString("title", mCachedBundle.getStringExtra("title"));
-                        map.putString("content", mCachedBundle.getStringExtra("content"));
-                        map.putString("custom_content", mCachedBundle.getStringExtra("custom_content"));
-                        mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit(mEvent, map);
-                        LocalNotificationCache.getInstance().checkNotificationIdAndRemove(mCachedBundle.getLongExtra("msgId",-123456));
-                        break;
+            try {
+                if (mEvent != null) {
+                    Logger.i(TAG, "Sending event : " + mEvent);
+                    WritableMap map = Arguments.createMap();
+                    switch (mEvent) {
+                        case Constants.EVENT_MESSAGE_RECEIVED:
+                            String title = mCachedBundle.getStringExtra("title");
+                            String content = mCachedBundle.getStringExtra("content");
+                            String customContent = mCachedBundle.getStringExtra("custom_content");
+                            map.putString("title", title);
+                            map.putString("content", content);
+                            map.putString("custom_content", customContent);
+                            mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit(mEvent, map);
+                            break;
+                        case Constants.EVENT_REGISTERED_ID:
+                            String token = mCachedBundle.getStringExtra("token");
+                            mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit(mEvent, token);
+                            break;
+                        case Constants.EVENT_REMOTE_NOTIFICATION_RECEIVED:
+                        case Constants.EVENT_OPEN_NOTIFICATION:
+                            map = Arguments.createMap();
+                            map.putString("title", mCachedBundle.getStringExtra("title"));
+                            map.putString("content", mCachedBundle.getStringExtra("content"));
+                            map.putString("custom_content", mCachedBundle.getStringExtra("custom_content"));
+                            mRAC.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit(mEvent, map);
+                            LocalNotificationCache.getInstance().checkNotificationIdAndRemove(mCachedBundle.getLongExtra("msgId",-123456));
+                            break;
+                    }
+                    mEvent = null;
+                    mCachedBundle = null;
                 }
-                mEvent = null;
-                mCachedBundle = null;
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
             if(!LocalNotificationCache.getInstance().isCacheEmpty()){
                 WritableMap mapLocal = Arguments.createMap();
                 Intent localIntent = (Intent) LocalNotificationCache.getInstance().popNotification();
