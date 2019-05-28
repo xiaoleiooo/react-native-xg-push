@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rain.day" >
-    <!-- 【必须】 信鸽SDK所需权限   -->
+    <!-- 【必须】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -23,7 +23,7 @@
     <application>
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver android:name="com.tencent.android.tpush.XGPushReceiver"
-            android:process=":xg_service_v3" >
+            android:process=":xg_service_v4" >
             <intent-filter android:priority="0x7fffffff" >
                 <!-- 【必须】 信鸽SDK的内部广播 -->
                 <action android:name="com.tencent.android.tpush.action.SDK" />
@@ -59,19 +59,18 @@
 
         <!-- 【必须】 信鸽service -->
         <service
-            android:name="com.tencent.android.tpush.service.XGPushServiceV3"
+            android:name="com.tencent.android.tpush.service.XGPushServiceV4"
             android:exported="true"
             android:persistent="true"
-            android:process=":xg_service_v3" />
-
-
+            android:process=":xg_service_v4" />
         <!-- 【必须】 提高service的存活率 -->
+
         <service
             android:name="com.tencent.android.tpush.rpc.XGRemoteService"
             android:exported="true">
             <intent-filter>
                 <!-- 【必须】 请修改为当前APP包名 .PUSH_ACTION, 如demo的包名为：com.qq.xgdemo -->
-                <action android:name="${applicationId}.PUSH_ACTION" />
+                <action android:name="${applicationId}..PUSH_ACTION" />
             </intent-filter>
         </service>
 
@@ -81,16 +80,17 @@
             android:authorities="${applicationId}.AUTH_XGPUSH"
             android:exported="true"/>
 
+
         <!-- 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo-->
         <provider
             android:name="com.tencent.android.tpush.SettingsContentProvider"
             android:authorities="${applicationId}.TPUSH_PROVIDER"
             android:exported="false" />
 
-        <!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo-->
+        <!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V4, 如demo的包名为：com.qq.xgdemo-->
         <provider
             android:name="com.tencent.mid.api.MidProvider"
-            android:authorities="${applicationId}.TENCENT.MID.V3"
+            android:authorities="${applicationId}.TENCENT.MID.V4"
             android:exported="true" >
         </provider>
 

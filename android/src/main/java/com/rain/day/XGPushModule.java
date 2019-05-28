@@ -49,7 +49,9 @@ public class XGPushModule extends ReactContextBaseJavaModule {
 
     XGPushModule(ReactApplicationContext reactContext){
         super(reactContext);
-        this.reactContext = reactContext;
+        this.reactContext = reactContext.getApplicationContext();
+        Logger.SHUTDOWNLOG = true;
+        Logger.SHUTDOWNTOAST = true;
         registerReceivers();
     }
 

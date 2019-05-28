@@ -22,12 +22,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.facebook.react:react-native:+'
-    compile 'me.leolin:ShortcutBadger:1.1.21@aar'
-    compile 'com.tencent.xinge:xinge:3.2.2-release'
-    compile 'com.tencent.wup:wup:1.0.0.E-release'
-    compile 'com.tencent.mid:mid:4.0.6-release'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
+    //信鸽jar，不包含厂商通道
+    implementation  'com.tencent.xinge:xinge:4.3.2-release'
+    //jg包
+    implementation'com.tencent.jg:jg:1.1'
+    //wup包
+    implementation 'com.tencent.wup:wup:1.0.0.E-Release'
+    //mid包，minSdkVersion 14
+    implementation 'com.tencent.mid:mid:4.0.7-Release'
 //    compile 'com.tencent.xinge:xghw:2.5.2.300-release'
 //    compile 'com.tencent.xinge:mipush:3.2.2-release'
 //    compile 'com.tencent.xinge:xgmz:3.2.2-release'

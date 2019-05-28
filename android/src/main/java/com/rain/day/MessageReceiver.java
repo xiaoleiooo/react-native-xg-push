@@ -91,6 +91,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult notification) {
+        Logger.d(TAG,"onNotifactionClickedResult:"+notification.toString());
         if (context == null || notification == null) {
             return;
         }
@@ -126,6 +127,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
      */
     @Override
     public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
+        Logger.d(TAG,"onNotifactionShowedResult:"+xgPushShowedResult.toString());
         // set app icon badge
         try {
             JSONObject obj = new JSONObject(xgPushShowedResult.getCustomContent());
