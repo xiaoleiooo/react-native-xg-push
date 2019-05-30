@@ -1,6 +1,6 @@
 {
   "name": "react-native-smart-xgpush",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "a xgpush plugin for react native application",
   "main": "index.js",
   "scripts": {
